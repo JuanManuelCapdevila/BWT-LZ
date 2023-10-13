@@ -2,10 +2,10 @@ import math
 import re
 
 # Supongamos que el tamaño máximo de ventana es 16, entonces requiere de 4 bits; Tomaremos una de 4
-VENTANA = 4
+VENTANA = 2
 VENTANA_MAX_BITS = 4
 def lecturaCadena():
-    archivo = open("..\\datos\\texto.txt", 'r')
+    archivo = open("../datos/texto1.txt", 'r')
     cadena = archivo.readline()
     patron = r'[-,;._\s+]'
 
