@@ -3,14 +3,14 @@ import codecs
 # Supongamos que el tamaño máximo de ventana es 16, entonces requiere de 4 bits;
 VENTANA = 4
 VENTANA_MAX_BITS = 4
-TXT = "../datos/texto1.txt"
+TXT = "../datos/archivo.txt"
 
-def match(cadena_ventana,cadena_no_comprimida):
-    cadena1=''.join(cadena_ventana)
-    if cadena1.find(cadena_no_comprimida) != -1:
-        return cadena_no_comprimida
+def match(bytes_ventana,bytes_no_comprimidos):
 
-    return ''
+    if bytes_ventana.find(bytes_no_comprimidos) != -1:
+        return bytes_no_comprimidos
+
+    return bytearray()
 def comprimido_bytes(comprimido_bin):
     while len(comprimido_bin) % 8 != 0:
         comprimido_bin = comprimido_bin + '0'
@@ -35,22 +35,22 @@ def movimiento_ventana(ventana_lectura,procesado,long_match,pos_byte):
 def comprimir():
     try:
         archivo = open(TXT, 'rb')
-        ventana_lectura=[''] * VENTANA
 
         # Primero codificamos en 4 bits el valor "n < 16" que es el tamaño de la ventana, para que el receptor
         # luego pueda decodificar
         comprimido = bin(VENTANA)[2:].zfill(VENTANA_MAX_BITS)
-        procesado=codecs.decode(archivo.read(VENTANA),'utf-8')
+        procesado=bytearray(archivo.read(VENTANA))
+        ventana_lectura=bytearray()
         # Llenamos la ventana y la codificamos
         # Luego en la lectura sabremos n° de bits iniciales que solo expresan los codigos de los "simbolos"
         # cargados en la ventana, porque ya con los primeros bits sabemos el tamaño de la ventana, siendo un total
         # "log2(VENTANA)"
-        if not procesado:
+        if len(procesado)!=VENTANA:
             return "" #Fin del archivo
         else:
             for i in range(VENTANA):
-                ventana_lectura[i]=procesado[i]
-                simb = bin(ord(procesado[i]))[2:]
+                ventana_lectura.append(procesado[i])
+                simb = bin(ventana_lectura[i])[2:].zfill(8)
                 comprimido = comprimido + simb
 
         print("\nTamaño de ventana + primeros \"n\" simbolos de la ventana: " + comprimido+"\n")
@@ -59,20 +59,19 @@ def comprimir():
         aux = archivo.read(1)
         if not aux:
             return "" #Fin del archivo
-        procesado += chr(ord(aux))
+        procesado.append(aux[0])
         pos_byte=VENTANA
 
         while True:
-            print(str(ventana_lectura))
-
-            cadena_match=""
+            #print(str(ventana_lectura))
+            cadena_match=bytearray()
 
             while len(match(ventana_lectura,procesado[pos_byte:]))!=0 and len(cadena_match) < VENTANA:
-                cadena_match=match(ventana_lectura,procesado[pos_byte:])
+                cadena_match.append(procesado[pos_byte + len(cadena_match)])
                 aux = archivo.read(1)
                 if not aux:
                     break #Fin del archivo
-                procesado += chr(ord(aux))
+                procesado.append(aux[0])
 
             # Quiere decir que hay coincidencia, aunque sea de longitud 1
             if(len(cadena_match) > 0):
@@ -87,18 +86,19 @@ def comprimir():
                 aux = archivo.read(1)
                 if not aux:
                     break #Fin del archivo
-                procesado += chr(ord(aux))
+                procesado.append(aux[0])
 
                 # flag = 1 + codPseudo = (1 + long_codigo) bits
-                simb = '1' + bin(ord(procesado[pos_byte]))[2:]
+                simb = '1' + bin(procesado[pos_byte])[2:].zfill(8)
                 ventana_lectura=movimiento_ventana(ventana_lectura,procesado,len(cadena_match),pos_byte)
                 pos_byte+= 1
 
             comprimido = comprimido + simb
-            print("cadena que hizo match: " + cadena_match)
+            #print("cadena que hizo match: " + cadena_match)
 
         long_fuente=pos_byte
-        print("\n\nLongitud del original: "+str(long_fuente*8)+" bits")
+        #print("\nOriginal (Bytes): "+ str(procesado))
+        print("\nLongitud del original: "+str(long_fuente*8)+" bits")
 
         return comprimido_bytes(comprimido)
 
@@ -109,7 +109,7 @@ def comprimir():
 def main():
     comprimido = comprimir()
     if comprimido != "":
-        print("\n\nComprimido (Bytes): "+ str(comprimido))
+        #print("\n\nComprimido (Bytes): "+ str(comprimido))
         print("\n\nLongitud de Comprimido (Incluyendo 4 bits para tamaño de ventana): "+str(len(comprimido)*8)+" bits")
     else:
         print("\n\nVENTANA DEMASIADO GRANDE PARA COMPRIMIR")
