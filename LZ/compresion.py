@@ -1,10 +1,7 @@
 import math
-import codecs
-# Supongamos que el tamaño máximo de ventana es 16, entonces requiere de 4 bits;
-VENTANA = 4
-VENTANA_MAX_BITS = 4
-TXT = "../datos/archivo.txt"
-
+from descompresion import descomprimir
+from variables_globales import VENTANA,VENTANA_MAX_BITS,TXT
+from movimiento import movimiento_ventana
 def match(bytes_ventana,bytes_no_comprimidos):
 
     if bytes_ventana.find(bytes_no_comprimidos) != -1:
@@ -17,21 +14,6 @@ def comprimido_bytes(comprimido_bin):
 
     arr_bytes=bytes([int(comprimido_bin[i:i+8], 2) for i in range(0, len(comprimido_bin), 8)])
     return arr_bytes
-
-def movimiento_ventana(ventana_lectura,procesado,long_match,pos_byte):
-    if(long_match > 1):
-        if(long_match!=VENTANA): #Si la coincidencia es toda la ventana, entonces no se cambia
-            for i in range(long_match,VENTANA):
-                ventana_lectura[i - long_match]=ventana_lectura[i]
-            for i in range(long_match):
-                ventana_lectura[VENTANA - long_match + i] = procesado[pos_byte + i]
-    else:
-        for i in range(1,VENTANA):
-            ventana_lectura[i-1]=ventana_lectura[i]
-        ventana_lectura[VENTANA-1]=procesado[pos_byte]
-
-    return ventana_lectura
-
 def comprimir():
     try:
         archivo = open(TXT, 'rb')
@@ -111,6 +93,8 @@ def main():
     if comprimido != "":
         #print("\n\nComprimido (Bytes): "+ str(comprimido))
         print("\n\nLongitud de Comprimido (Incluyendo 4 bits para tamaño de ventana): "+str(len(comprimido)*8)+" bits")
+        print("\n\nLa longitud del descomprimido: " + str(len(descomprimir(comprimido))*8)+" bits")
+
     else:
         print("\n\nVENTANA DEMASIADO GRANDE PARA COMPRIMIR")
 
