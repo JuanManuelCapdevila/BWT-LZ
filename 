@@ -1,0 +1,41 @@
+[33mcommit 5a230937f884a4a09094776c17ae235d7bad5b1d[m[33m ([m[1;36mHEAD -> [m[1;32mbwt-module[m[33m, [m[1;31morigin/bwt-module[m[33m)[m
+Author: Juan.capdevila <juan.capdevila27@gmail.com>
+Date:   Thu Oct 26 19:26:04 2023 -0300
+
+    cambio en el transformador
+
+[33mcommit 211acc5d4583161c8a74102d2c5cb9c0ed16b982[m
+Author: Juan.capdevila <juan.capdevila27@gmail.com>
+Date:   Tue Oct 24 20:45:26 2023 -0300
+
+    Se implementaron cambios en bwt para procesar bytes
+
+[33mcommit 42738888c732e585489cc80bf9a0dbafda574051[m
+Author: Juan.capdevila <juan.capdevila27@gmail.com>
+Date:   Sat Oct 14 15:18:32 2023 -0300
+
+    se incorpora modulo BWT
+
+[33mcommit 3af21cfc97190e483d3d1f4b7536746fcdc23ef0[m[33m ([m[1;31mupstream/master[m[33m, [m[1;31mupstream/HEAD[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: AgustinRatner <agustinratsk8@gmail.com>
+Date:   Fri Oct 13 17:46:23 2023 -0300
+
+    Solucione un error  lógico que tenia que ver con el orden del codigo
+
+[33mcommit 37245b5f3a5ec74eae25977104909d03cd99f3f7[m
+Author: AgustinRatner <agustinratsk8@gmail.com>
+Date:   Fri Oct 13 10:10:12 2023 -0300
+
+    Ahora si
+
+[33mcommit 1873e2d30cb48b93711d8a9b9457060f7e052fb6[m
+Author: AgustinRatner <agustinratsk8@gmail.com>
+Date:   Fri Oct 13 10:05:27 2023 -0300
+
+    Se agregaron nuevos textos
+
+[33mcommit 37931477da495041e4eda2a0f12ddd496a0a4d54[m
+Author: AgustinRatner <agustinratsk8@gmail.com>
+Date:   Thu Oct 12 20:45:34 2023 -0300
+
+    Primeros pasos con BWT + LZ
